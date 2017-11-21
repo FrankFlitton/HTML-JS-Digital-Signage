@@ -1,0 +1,122 @@
+<?php 
+        header( 'X-Frame-Options: GOFORIT'); 
+?>
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang=""><![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang=""><![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="" manifest="manifest.appcache">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <!--[if lt IE 9]><script src="js/vendor/html5-3.6-respond-1.4.2.min.js"></script><![endif]-->
+</head>
+
+<body class="blackout">
+
+    <div id="debug">
+        <span id="title">on screen console</span> <br><br>
+        avg fps/draws:&nbsp;<div id="fps"></div>
+        <div id="console-log-div"></div>
+    </div>
+<!--    <button onclick="return window.addOne()">Add</button>-->
+    <div id="ball" class="bounce">
+        testing this
+    </div>
+
+    <!--[if lt IE 8]><p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
+    <div class="blackout"></div>
+    <div class="intro">
+        <div class="badge">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div><div class="dotOn"></div>
+            <img src="img/btwfBadge.png" alt="">
+        </div>
+        <div class="purpleBG"></div>
+    </div>
+    
+    <div class="trivia-container">
+        <div class="trivia">
+            <div class="text">
+                <img src="img/pBG.png">
+                <p><strong>Jennifer Garner</strong> was a children's ballet teacher.</p>
+            </div>
+            <div class="image intro bw">
+                <img src="img/pic1.jpg">
+            </div>
+        </div>
+        <div class="trivia odd">
+            <div class="text">
+                <img src="img/pBG.png">
+                <p>She turned down an offer to study at Yale University in order to pursue an acting career.</p>
+            </div>
+            <div class="image">
+                <img src="img/pic2.jpg">
+            </div>
+        </div>
+        <div class="trivia">
+            <div class="text">
+                <img src="img/pBG.png">
+                <p>And she played the saxophone in her high school marching band.</p>
+            </div>
+            <div class="image">
+                <img src="img/pic3.jpg">
+            </div>
+        </div>
+        <div class="bg" id="one">&nbsp;</div>
+        <div class="bg" id="two">&nbsp;</div>
+    </div>
+    
+<!--    Video Start    -->
+    
+    <div class="video-container">
+        <div class="video-trigger" id="wipe1">
+            <div class="vid-in">
+                <div class="red-wipe"></div>
+            </div>
+        </div>
+        <div class="video-trigger" id="wipe2">
+            <div class="vid-in">
+                <div class="red-wipe"></div>
+            </div>
+        </div>
+        <div class="video-trigger">
+            <div class="vid-in delay">
+            <div class="video-mask">
+               <div class="video-rotate">
+                    <video id="trailer" muted>
+                        <source src="img/MiraclesFromHeaven_Cutdown.webm" type="video/webm">
+                        <p>Video Failed to Load</p>
+                    </video>
+                </div>
+            </div>
+            </div>
+        </div>
+        
+        <div class="lower-third">
+            <img class="highlight" src="img/highlight.png" alt="">    
+            <div class="img-mask">
+                <img src="img/l3.png" alt="">
+            </div>
+            <p class="trailer-text">
+                <b><sapan id="name">Jennifer</sapan></b> stars in <b><sapan id="show">Miracles From Heaven</sapan></b><br>
+                In theatres <span id="date">March 18</span>
+            </p>
+        </div>
+
+    </div>
+    
+    <div class="number">WebM_Complex</div>
+    <script src="js/vendor/jquery-1.11.2.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

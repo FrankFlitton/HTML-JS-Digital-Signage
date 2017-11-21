@@ -1,0 +1,5 @@
+# CACHE 10 Mins
+
+<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf|svg|webm)$">
+    Header set Cache-Control "max-age=600, public"
+</FilesMatch>

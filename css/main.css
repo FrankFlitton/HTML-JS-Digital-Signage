@@ -1,0 +1,1170 @@
+#debug {
+  position: absolute;
+  top: 300px;
+  left: 0;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999999999999999;
+  display: none;
+  width: auto;
+  font-family: monospace;
+  padding: 1em;
+}
+#debug #title {
+  text-decoration: underline;
+}
+#console-log-div {
+  max-height: 160px;
+  overflow-y: scroll;
+}
+#fps {
+  display: inline-block;
+  color: #0ff;
+}
+body.debug #debug {
+  display: block;
+}
+/* FPS monitoring object */
+.bounce {
+  font-size: 48pt;
+  color: red;
+  background: red;
+  border: 2px solid green;
+  opacity: .01;
+}
+* {
+  transition: all 0.25s ease;
+  -webkit-transition: all 0.25s ease;
+  -moz-transition: all 0.25s ease;
+  -ms-transition: all 0.25s ease;
+  -o-transition: all 0.25s ease;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+}
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+@font-face {
+  font-family: 'Gotham Condensed';
+  src: url('../fonts/hinted-GothamCondensed-Book.eot');
+  src: url('../fonts/hinted-GothamCondensed-Book.eot?#iefix') format('embedded-opentype'), url('../fonts/hinted-GothamCondensed-Book.woff') format('woff'), url('../fonts/hinted-GothamCondensed-Book.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Gotham Condensed';
+  src: url('../fonts/hinted-GothamCondensed-Medium.eot');
+  src: url('../fonts/hinted-GothamCondensed-Medium.eot?#iefix') format('embedded-opentype'), url('../fonts/hinted-GothamCondensed-Medium.woff') format('woff'), url('../fonts/hinted-GothamCondensed-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Gotham Book';
+  src: url('../fonts/GothamBook.eot');
+  src: url('../fonts/GothamBook.eot?#iefix') format('embedded-opentype'), url('../fonts/GothamBook.woff') format('woff'), url('../fonts/GothamBook.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Gotham Book';
+  src: url('../fonts/GothamBold.eot');
+  src: url('../fonts/GothamBold.eot?#iefix') format('embedded-opentype'), url('../fonts/GothamBold.woff') format('woff'), url('../fonts/GothamBold.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  display: block;
+  position: absolute;
+  font-family: 'Gotham Condensed';
+  overflow: hidden;
+}
+strong {
+  font-weight: 500;
+}
+.number {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 20px;
+  background: white;
+  border-radius: 0 0 10px 0;
+  text-align: center;
+  color: black;
+  z-index: 20000000;
+  opacity: 1;
+}
+/* ==================================================
+   Intro Set Up
+===================================================== */
+.intro {
+  height: 100vh;
+  width: 100vw;
+}
+.purpleBG {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background-color: purple;
+  background-image: url(../img/purpleGB.gif);
+  z-index: -1;
+  top: 0;
+  opacity: 1;
+}
+.badge {
+  height: 42.8125vw;
+  width: 42.8125vw;
+  background-size: 100%;
+  position: absolute;
+  top: 5vh;
+  left: 1.8vw;
+  transform: scale(1) translate(63%, 8%);
+  -webkit-transform: scale(1) translate(63%, 8%);
+}
+.badge img {
+  width: 100%;
+}
+.badge .dot,
+.badge .dotOn {
+  width: 1.19791667vw;
+  height: 1.19791667vw;
+  margin-left: 0.59895833vw;
+  text-align: center;
+  font-size: 8px;
+  line-height: 10px;
+  position: absolute;
+  display: block;
+  z-index: 2;
+  background-size: 100%;
+  opacity: 0;
+}
+.badge .dot {
+  background-image: url(../img/dotOff.png);
+}
+.badge .dotOn {
+  background-image: url(../img/dotOn.png);
+  z-index: 1;
+  display: block;
+  opacity: 1;
+}
+/* ==================================================
+   Badge Dot Placement
+===================================================== */
+@-webkit-keyframes bulbFlash {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.flash .dot:nth-child(80) {
+  animation: bulbFlash 1s ease 2s 2;
+  -webkit-animation: bulbFlash 1s ease 2s 2;
+}
+.flash .dot:nth-child(79) {
+  animation: bulbFlash 1s ease 1.975s 2;
+  -webkit-animation: bulbFlash 1s ease 1.975s 2;
+}
+.flash .dot:nth-child(78) {
+  animation: bulbFlash 1s ease 1.95s 2;
+  -webkit-animation: bulbFlash 1s ease 1.95s 2;
+}
+.flash .dot:nth-child(77) {
+  animation: bulbFlash 1s ease 1.925s 2;
+  -webkit-animation: bulbFlash 1s ease 1.925s 2;
+}
+.flash .dot:nth-child(76) {
+  animation: bulbFlash 1s ease 1.9s 2;
+  -webkit-animation: bulbFlash 1s ease 1.9s 2;
+}
+.flash .dot:nth-child(75) {
+  animation: bulbFlash 1s ease 1.875s 2;
+  -webkit-animation: bulbFlash 1s ease 1.875s 2;
+}
+.flash .dot:nth-child(74) {
+  animation: bulbFlash 1s ease 1.85s 2;
+  -webkit-animation: bulbFlash 1s ease 1.85s 2;
+}
+.flash .dot:nth-child(73) {
+  animation: bulbFlash 1s ease 1.825s 2;
+  -webkit-animation: bulbFlash 1s ease 1.825s 2;
+}
+.flash .dot:nth-child(72) {
+  animation: bulbFlash 1s ease 1.8s 2;
+  -webkit-animation: bulbFlash 1s ease 1.8s 2;
+}
+.flash .dot:nth-child(71) {
+  animation: bulbFlash 1s ease 1.775s 2;
+  -webkit-animation: bulbFlash 1s ease 1.775s 2;
+}
+.flash .dot:nth-child(70) {
+  animation: bulbFlash 1s ease 1.75s 2;
+  -webkit-animation: bulbFlash 1s ease 1.75s 2;
+}
+.flash .dot:nth-child(69) {
+  animation: bulbFlash 1s ease 1.725s 2;
+  -webkit-animation: bulbFlash 1s ease 1.725s 2;
+}
+.flash .dot:nth-child(68) {
+  animation: bulbFlash 1s ease 1.7s 2;
+  -webkit-animation: bulbFlash 1s ease 1.7s 2;
+}
+.flash .dot:nth-child(67) {
+  animation: bulbFlash 1s ease 1.675s 2;
+  -webkit-animation: bulbFlash 1s ease 1.675s 2;
+}
+.flash .dot:nth-child(66) {
+  animation: bulbFlash 1s ease 1.65s 2;
+  -webkit-animation: bulbFlash 1s ease 1.65s 2;
+}
+.flash .dot:nth-child(65) {
+  animation: bulbFlash 1s ease 1.625s 2;
+  -webkit-animation: bulbFlash 1s ease 1.625s 2;
+}
+.flash .dot:nth-child(64) {
+  animation: bulbFlash 1s ease 1.6s 2;
+  -webkit-animation: bulbFlash 1s ease 1.6s 2;
+}
+.flash .dot:nth-child(63) {
+  animation: bulbFlash 1s ease 1.575s 2;
+  -webkit-animation: bulbFlash 1s ease 1.575s 2;
+}
+.flash .dot:nth-child(62) {
+  animation: bulbFlash 1s ease 1.55s 2;
+  -webkit-animation: bulbFlash 1s ease 1.55s 2;
+}
+.flash .dot:nth-child(61) {
+  animation: bulbFlash 1s ease 1.525s 2;
+  -webkit-animation: bulbFlash 1s ease 1.525s 2;
+}
+.flash .dot:nth-child(60) {
+  animation: bulbFlash 1s ease 1.5s 2;
+  -webkit-animation: bulbFlash 1s ease 1.5s 2;
+}
+.flash .dot:nth-child(59) {
+  animation: bulbFlash 1s ease 1.475s 2;
+  -webkit-animation: bulbFlash 1s ease 1.475s 2;
+}
+.flash .dot:nth-child(58) {
+  animation: bulbFlash 1s ease 1.45s 2;
+  -webkit-animation: bulbFlash 1s ease 1.45s 2;
+}
+.flash .dot:nth-child(57) {
+  animation: bulbFlash 1s ease 1.425s 2;
+  -webkit-animation: bulbFlash 1s ease 1.425s 2;
+}
+.flash .dot:nth-child(56) {
+  animation: bulbFlash 1s ease 1.4s 2;
+  -webkit-animation: bulbFlash 1s ease 1.4s 2;
+}
+.flash .dot:nth-child(55) {
+  animation: bulbFlash 1s ease 1.375s 2;
+  -webkit-animation: bulbFlash 1s ease 1.375s 2;
+}
+.flash .dot:nth-child(54) {
+  animation: bulbFlash 1s ease 1.35s 2;
+  -webkit-animation: bulbFlash 1s ease 1.35s 2;
+}
+.flash .dot:nth-child(53) {
+  animation: bulbFlash 1s ease 1.325s 2;
+  -webkit-animation: bulbFlash 1s ease 1.325s 2;
+}
+.flash .dot:nth-child(52) {
+  animation: bulbFlash 1s ease 1.3s 2;
+  -webkit-animation: bulbFlash 1s ease 1.3s 2;
+}
+.flash .dot:nth-child(51) {
+  animation: bulbFlash 1s ease 1.275s 2;
+  -webkit-animation: bulbFlash 1s ease 1.275s 2;
+}
+.flash .dot:nth-child(50) {
+  animation: bulbFlash 1s ease 1.25s 2;
+  -webkit-animation: bulbFlash 1s ease 1.25s 2;
+}
+.flash .dot:nth-child(49) {
+  animation: bulbFlash 1s ease 1.225s 2;
+  -webkit-animation: bulbFlash 1s ease 1.225s 2;
+}
+.flash .dot:nth-child(48) {
+  animation: bulbFlash 1s ease 1.2s 2;
+  -webkit-animation: bulbFlash 1s ease 1.2s 2;
+}
+.flash .dot:nth-child(47) {
+  animation: bulbFlash 1s ease 1.175s 2;
+  -webkit-animation: bulbFlash 1s ease 1.175s 2;
+}
+.flash .dot:nth-child(46) {
+  animation: bulbFlash 1s ease 1.15s 2;
+  -webkit-animation: bulbFlash 1s ease 1.15s 2;
+}
+.flash .dot:nth-child(45) {
+  animation: bulbFlash 1s ease 1.125s 2;
+  -webkit-animation: bulbFlash 1s ease 1.125s 2;
+}
+.flash .dot:nth-child(44) {
+  animation: bulbFlash 1s ease 1.1s 2;
+  -webkit-animation: bulbFlash 1s ease 1.1s 2;
+}
+.flash .dot:nth-child(43) {
+  animation: bulbFlash 1s ease 1.075s 2;
+  -webkit-animation: bulbFlash 1s ease 1.075s 2;
+}
+.flash .dot:nth-child(42) {
+  animation: bulbFlash 1s ease 1.05s 2;
+  -webkit-animation: bulbFlash 1s ease 1.05s 2;
+}
+.flash .dot:nth-child(41) {
+  animation: bulbFlash 1s ease 1.025s 2;
+  -webkit-animation: bulbFlash 1s ease 1.025s 2;
+}
+.flash .dot:nth-child(40) {
+  animation: bulbFlash 1s ease 1s 2;
+  -webkit-animation: bulbFlash 1s ease 1s 2;
+}
+.flash .dot:nth-child(39) {
+  animation: bulbFlash 1s ease 0.975s 2;
+  -webkit-animation: bulbFlash 1s ease 0.975s 2;
+}
+.flash .dot:nth-child(38) {
+  animation: bulbFlash 1s ease 0.95s 2;
+  -webkit-animation: bulbFlash 1s ease 0.95s 2;
+}
+.flash .dot:nth-child(37) {
+  animation: bulbFlash 1s ease 0.925s 2;
+  -webkit-animation: bulbFlash 1s ease 0.925s 2;
+}
+.flash .dot:nth-child(36) {
+  animation: bulbFlash 1s ease 0.9s 2;
+  -webkit-animation: bulbFlash 1s ease 0.9s 2;
+}
+.flash .dot:nth-child(35) {
+  animation: bulbFlash 1s ease 0.875s 2;
+  -webkit-animation: bulbFlash 1s ease 0.875s 2;
+}
+.flash .dot:nth-child(34) {
+  animation: bulbFlash 1s ease 0.85s 2;
+  -webkit-animation: bulbFlash 1s ease 0.85s 2;
+}
+.flash .dot:nth-child(33) {
+  animation: bulbFlash 1s ease 0.825s 2;
+  -webkit-animation: bulbFlash 1s ease 0.825s 2;
+}
+.flash .dot:nth-child(32) {
+  animation: bulbFlash 1s ease 0.8s 2;
+  -webkit-animation: bulbFlash 1s ease 0.8s 2;
+}
+.flash .dot:nth-child(31) {
+  animation: bulbFlash 1s ease 0.775s 2;
+  -webkit-animation: bulbFlash 1s ease 0.775s 2;
+}
+.flash .dot:nth-child(30) {
+  animation: bulbFlash 1s ease 0.75s 2;
+  -webkit-animation: bulbFlash 1s ease 0.75s 2;
+}
+.flash .dot:nth-child(29) {
+  animation: bulbFlash 1s ease 0.725s 2;
+  -webkit-animation: bulbFlash 1s ease 0.725s 2;
+}
+.flash .dot:nth-child(28) {
+  animation: bulbFlash 1s ease 0.7s 2;
+  -webkit-animation: bulbFlash 1s ease 0.7s 2;
+}
+.flash .dot:nth-child(27) {
+  animation: bulbFlash 1s ease 0.675s 2;
+  -webkit-animation: bulbFlash 1s ease 0.675s 2;
+}
+.flash .dot:nth-child(26) {
+  animation: bulbFlash 1s ease 0.65s 2;
+  -webkit-animation: bulbFlash 1s ease 0.65s 2;
+}
+.flash .dot:nth-child(25) {
+  animation: bulbFlash 1s ease 0.625s 2;
+  -webkit-animation: bulbFlash 1s ease 0.625s 2;
+}
+.flash .dot:nth-child(24) {
+  animation: bulbFlash 1s ease 0.6s 2;
+  -webkit-animation: bulbFlash 1s ease 0.6s 2;
+}
+.flash .dot:nth-child(23) {
+  animation: bulbFlash 1s ease 0.575s 2;
+  -webkit-animation: bulbFlash 1s ease 0.575s 2;
+}
+.flash .dot:nth-child(22) {
+  animation: bulbFlash 1s ease 0.55s 2;
+  -webkit-animation: bulbFlash 1s ease 0.55s 2;
+}
+.flash .dot:nth-child(21) {
+  animation: bulbFlash 1s ease 0.525s 2;
+  -webkit-animation: bulbFlash 1s ease 0.525s 2;
+}
+.flash .dot:nth-child(20) {
+  animation: bulbFlash 1s ease 0.5s 2;
+  -webkit-animation: bulbFlash 1s ease 0.5s 2;
+}
+.flash .dot:nth-child(19) {
+  animation: bulbFlash 1s ease 0.475s 2;
+  -webkit-animation: bulbFlash 1s ease 0.475s 2;
+}
+.flash .dot:nth-child(18) {
+  animation: bulbFlash 1s ease 0.45s 2;
+  -webkit-animation: bulbFlash 1s ease 0.45s 2;
+}
+.flash .dot:nth-child(17) {
+  animation: bulbFlash 1s ease 0.425s 2;
+  -webkit-animation: bulbFlash 1s ease 0.425s 2;
+}
+.flash .dot:nth-child(16) {
+  animation: bulbFlash 1s ease 0.4s 2;
+  -webkit-animation: bulbFlash 1s ease 0.4s 2;
+}
+.flash .dot:nth-child(15) {
+  animation: bulbFlash 1s ease 0.375s 2;
+  -webkit-animation: bulbFlash 1s ease 0.375s 2;
+}
+.flash .dot:nth-child(14) {
+  animation: bulbFlash 1s ease 0.35s 2;
+  -webkit-animation: bulbFlash 1s ease 0.35s 2;
+}
+.flash .dot:nth-child(13) {
+  animation: bulbFlash 1s ease 0.325s 2;
+  -webkit-animation: bulbFlash 1s ease 0.325s 2;
+}
+.flash .dot:nth-child(12) {
+  animation: bulbFlash 1s ease 0.3s 2;
+  -webkit-animation: bulbFlash 1s ease 0.3s 2;
+}
+.flash .dot:nth-child(11) {
+  animation: bulbFlash 1s ease 0.275s 2;
+  -webkit-animation: bulbFlash 1s ease 0.275s 2;
+}
+.flash .dot:nth-child(10) {
+  animation: bulbFlash 1s ease 0.25s 2;
+  -webkit-animation: bulbFlash 1s ease 0.25s 2;
+}
+.flash .dot:nth-child(9) {
+  animation: bulbFlash 1s ease 0.225s 2;
+  -webkit-animation: bulbFlash 1s ease 0.225s 2;
+}
+.flash .dot:nth-child(8) {
+  animation: bulbFlash 1s ease 0.2s 2;
+  -webkit-animation: bulbFlash 1s ease 0.2s 2;
+}
+.flash .dot:nth-child(7) {
+  animation: bulbFlash 1s ease 0.175s 2;
+  -webkit-animation: bulbFlash 1s ease 0.175s 2;
+}
+.flash .dot:nth-child(6) {
+  animation: bulbFlash 1s ease 0.15s 2;
+  -webkit-animation: bulbFlash 1s ease 0.15s 2;
+}
+.flash .dot:nth-child(5) {
+  animation: bulbFlash 1s ease 0.125s 2;
+  -webkit-animation: bulbFlash 1s ease 0.125s 2;
+}
+.flash .dot:nth-child(4) {
+  animation: bulbFlash 1s ease 0.1s 2;
+  -webkit-animation: bulbFlash 1s ease 0.1s 2;
+}
+.flash .dot:nth-child(3) {
+  animation: bulbFlash 1s ease 0.075s 2;
+  -webkit-animation: bulbFlash 1s ease 0.075s 2;
+}
+.flash .dot:nth-child(2) {
+  animation: bulbFlash 1s ease 0.05s 2;
+  -webkit-animation: bulbFlash 1s ease 0.05s 2;
+}
+.flash .dot:nth-child(1) {
+  animation: bulbFlash 1s ease 0.025s 2;
+  -webkit-animation: bulbFlash 1s ease 0.025s 2;
+}
+.badge .dot:nth-child(80),
+.badge .dotOn:nth-child(80) {
+  left: 47.52032564%;
+  top: 95.71732564%;
+}
+.badge .dot:nth-child(79),
+.badge .dotOn:nth-child(79) {
+  left: 54.90356308%;
+  top: 95.13625225%;
+}
+.badge .dot:nth-child(78),
+.badge .dotOn:nth-child(78) {
+  left: 62.10500072%;
+  top: 93.40734003%;
+}
+.badge .dot:nth-child(77),
+.badge .dotOn:nth-child(77) {
+  left: 68.94731525%;
+  top: 90.57316056%;
+}
+.badge .dot:nth-child(76),
+.badge .dotOn:nth-child(76) {
+  left: 75.26202619%;
+  top: 86.70350072%;
+}
+.badge .dot:nth-child(75),
+.badge .dotOn:nth-child(75) {
+  left: 80.89364439%;
+  top: 81.89364439%;
+}
+.badge .dot:nth-child(74),
+.badge .dotOn:nth-child(74) {
+  left: 85.70350072%;
+  top: 76.26202619%;
+}
+.badge .dot:nth-child(73),
+.badge .dotOn:nth-child(73) {
+  left: 89.57316056%;
+  top: 69.94731525%;
+}
+.badge .dot:nth-child(72),
+.badge .dotOn:nth-child(72) {
+  left: 92.40734003%;
+  top: 63.10500072%;
+}
+.badge .dot:nth-child(71),
+.badge .dotOn:nth-child(71) {
+  left: 94.13625225%;
+  top: 55.90356308%;
+}
+.badge .dot:nth-child(70),
+.badge .dotOn:nth-child(70) {
+  left: 94.71732564%;
+  top: 48.52032564%;
+}
+.badge .dot:nth-child(69),
+.badge .dotOn:nth-child(69) {
+  left: 94.13625225%;
+  top: 41.13708819%;
+}
+.badge .dot:nth-child(68),
+.badge .dotOn:nth-child(68) {
+  left: 92.40734003%;
+  top: 33.93565055%;
+}
+.badge .dot:nth-child(67),
+.badge .dotOn:nth-child(67) {
+  left: 89.57316056%;
+  top: 27.09333602%;
+}
+.badge .dot:nth-child(66),
+.badge .dotOn:nth-child(66) {
+  left: 85.70350072%;
+  top: 20.77862508%;
+}
+.badge .dot:nth-child(65),
+.badge .dotOn:nth-child(65) {
+  left: 80.89364439%;
+  top: 15.14700688%;
+}
+.badge .dot:nth-child(64),
+.badge .dotOn:nth-child(64) {
+  left: 75.26202619%;
+  top: 10.33715055%;
+}
+.badge .dot:nth-child(63),
+.badge .dotOn:nth-child(63) {
+  left: 68.94731525%;
+  top: 6.46749071%;
+}
+.badge .dot:nth-child(62),
+.badge .dotOn:nth-child(62) {
+  left: 62.10500072%;
+  top: 3.63331124%;
+}
+.badge .dot:nth-child(61),
+.badge .dotOn:nth-child(61) {
+  left: 54.90356308%;
+  top: 1.90439902%;
+}
+.badge .dot:nth-child(60),
+.badge .dotOn:nth-child(60) {
+  left: 47.52032564%;
+  top: 1.32332564%;
+}
+.badge .dot:nth-child(59),
+.badge .dotOn:nth-child(59) {
+  left: 40.13708819%;
+  top: 1.90439902%;
+}
+.badge .dot:nth-child(58),
+.badge .dotOn:nth-child(58) {
+  left: 32.93565055%;
+  top: 3.63331124%;
+}
+.badge .dot:nth-child(57),
+.badge .dotOn:nth-child(57) {
+  left: 26.09333602%;
+  top: 6.46749071%;
+}
+.badge .dot:nth-child(56),
+.badge .dotOn:nth-child(56) {
+  left: 19.77862508%;
+  top: 10.33715055%;
+}
+.badge .dot:nth-child(55),
+.badge .dotOn:nth-child(55) {
+  left: 14.14700688%;
+  top: 15.14700688%;
+}
+.badge .dot:nth-child(54),
+.badge .dotOn:nth-child(54) {
+  left: 9.33715055%;
+  top: 20.77862508%;
+}
+.badge .dot:nth-child(53),
+.badge .dotOn:nth-child(53) {
+  left: 5.46749071%;
+  top: 27.09333602%;
+}
+.badge .dot:nth-child(52),
+.badge .dotOn:nth-child(52) {
+  left: 2.63331124%;
+  top: 33.93565055%;
+}
+.badge .dot:nth-child(51),
+.badge .dotOn:nth-child(51) {
+  left: 0.90439902%;
+  top: 41.13708819%;
+}
+.badge .dot:nth-child(50),
+.badge .dotOn:nth-child(50) {
+  left: 0.32332564%;
+  top: 48.52032564%;
+}
+.badge .dot:nth-child(49),
+.badge .dotOn:nth-child(49) {
+  left: 0.90439902%;
+  top: 55.90356308%;
+}
+.badge .dot:nth-child(48),
+.badge .dotOn:nth-child(48) {
+  left: 2.63331124%;
+  top: 63.10500072%;
+}
+.badge .dot:nth-child(47),
+.badge .dotOn:nth-child(47) {
+  left: 5.46749071%;
+  top: 69.94731525%;
+}
+.badge .dot:nth-child(46),
+.badge .dotOn:nth-child(46) {
+  left: 9.33715055%;
+  top: 76.26202619%;
+}
+.badge .dot:nth-child(45),
+.badge .dotOn:nth-child(45) {
+  left: 14.14700688%;
+  top: 81.89364439%;
+}
+.badge .dot:nth-child(44),
+.badge .dotOn:nth-child(44) {
+  left: 19.77862508%;
+  top: 86.70350072%;
+}
+.badge .dot:nth-child(43),
+.badge .dotOn:nth-child(43) {
+  left: 26.09333602%;
+  top: 90.57316056%;
+}
+.badge .dot:nth-child(42),
+.badge .dotOn:nth-child(42) {
+  left: 32.93565055%;
+  top: 93.40734003%;
+}
+.badge .dot:nth-child(41),
+.badge .dotOn:nth-child(41) {
+  left: 40.13708819%;
+  top: 95.13625225%;
+}
+.badge .dot:nth-child(40),
+.badge .dotOn:nth-child(40) {
+  left: 47.52032564%;
+  top: 95.71732564%;
+}
+.badge .dot:nth-child(39),
+.badge .dotOn:nth-child(39) {
+  left: 54.90356308%;
+  top: 95.13625225%;
+}
+.badge .dot:nth-child(38),
+.badge .dotOn:nth-child(38) {
+  left: 62.10500072%;
+  top: 93.40734003%;
+}
+.badge .dot:nth-child(37),
+.badge .dotOn:nth-child(37) {
+  left: 68.94731525%;
+  top: 90.57316056%;
+}
+.badge .dot:nth-child(36),
+.badge .dotOn:nth-child(36) {
+  left: 75.26202619%;
+  top: 86.70350072%;
+}
+.badge .dot:nth-child(35),
+.badge .dotOn:nth-child(35) {
+  left: 80.89364439%;
+  top: 81.89364439%;
+}
+.badge .dot:nth-child(34),
+.badge .dotOn:nth-child(34) {
+  left: 85.70350072%;
+  top: 76.26202619%;
+}
+.badge .dot:nth-child(33),
+.badge .dotOn:nth-child(33) {
+  left: 89.57316056%;
+  top: 69.94731525%;
+}
+.badge .dot:nth-child(32),
+.badge .dotOn:nth-child(32) {
+  left: 92.40734003%;
+  top: 63.10500072%;
+}
+.badge .dot:nth-child(31),
+.badge .dotOn:nth-child(31) {
+  left: 94.13625225%;
+  top: 55.90356308%;
+}
+.badge .dot:nth-child(30),
+.badge .dotOn:nth-child(30) {
+  left: 94.71732564%;
+  top: 48.52032564%;
+}
+.badge .dot:nth-child(29),
+.badge .dotOn:nth-child(29) {
+  left: 94.13625225%;
+  top: 41.13708819%;
+}
+.badge .dot:nth-child(28),
+.badge .dotOn:nth-child(28) {
+  left: 92.40734003%;
+  top: 33.93565055%;
+}
+.badge .dot:nth-child(27),
+.badge .dotOn:nth-child(27) {
+  left: 89.57316056%;
+  top: 27.09333602%;
+}
+.badge .dot:nth-child(26),
+.badge .dotOn:nth-child(26) {
+  left: 85.70350072%;
+  top: 20.77862508%;
+}
+.badge .dot:nth-child(25),
+.badge .dotOn:nth-child(25) {
+  left: 80.89364439%;
+  top: 15.14700688%;
+}
+.badge .dot:nth-child(24),
+.badge .dotOn:nth-child(24) {
+  left: 75.26202619%;
+  top: 10.33715055%;
+}
+.badge .dot:nth-child(23),
+.badge .dotOn:nth-child(23) {
+  left: 68.94731525%;
+  top: 6.46749071%;
+}
+.badge .dot:nth-child(22),
+.badge .dotOn:nth-child(22) {
+  left: 62.10500072%;
+  top: 3.63331124%;
+}
+.badge .dot:nth-child(21),
+.badge .dotOn:nth-child(21) {
+  left: 54.90356308%;
+  top: 1.90439902%;
+}
+.badge .dot:nth-child(20),
+.badge .dotOn:nth-child(20) {
+  left: 47.52032564%;
+  top: 1.32332564%;
+}
+.badge .dot:nth-child(19),
+.badge .dotOn:nth-child(19) {
+  left: 40.13708819%;
+  top: 1.90439902%;
+}
+.badge .dot:nth-child(18),
+.badge .dotOn:nth-child(18) {
+  left: 32.93565055%;
+  top: 3.63331124%;
+}
+.badge .dot:nth-child(17),
+.badge .dotOn:nth-child(17) {
+  left: 26.09333602%;
+  top: 6.46749071%;
+}
+.badge .dot:nth-child(16),
+.badge .dotOn:nth-child(16) {
+  left: 19.77862508%;
+  top: 10.33715055%;
+}
+.badge .dot:nth-child(15),
+.badge .dotOn:nth-child(15) {
+  left: 14.14700688%;
+  top: 15.14700688%;
+}
+.badge .dot:nth-child(14),
+.badge .dotOn:nth-child(14) {
+  left: 9.33715055%;
+  top: 20.77862508%;
+}
+.badge .dot:nth-child(13),
+.badge .dotOn:nth-child(13) {
+  left: 5.46749071%;
+  top: 27.09333602%;
+}
+.badge .dot:nth-child(12),
+.badge .dotOn:nth-child(12) {
+  left: 2.63331124%;
+  top: 33.93565055%;
+}
+.badge .dot:nth-child(11),
+.badge .dotOn:nth-child(11) {
+  left: 0.90439902%;
+  top: 41.13708819%;
+}
+.badge .dot:nth-child(10),
+.badge .dotOn:nth-child(10) {
+  left: 0.32332564%;
+  top: 48.52032564%;
+}
+.badge .dot:nth-child(9),
+.badge .dotOn:nth-child(9) {
+  left: 0.90439902%;
+  top: 55.90356308%;
+}
+.badge .dot:nth-child(8),
+.badge .dotOn:nth-child(8) {
+  left: 2.63331124%;
+  top: 63.10500072%;
+}
+.badge .dot:nth-child(7),
+.badge .dotOn:nth-child(7) {
+  left: 5.46749071%;
+  top: 69.94731525%;
+}
+.badge .dot:nth-child(6),
+.badge .dotOn:nth-child(6) {
+  left: 9.33715055%;
+  top: 76.26202619%;
+}
+.badge .dot:nth-child(5),
+.badge .dotOn:nth-child(5) {
+  left: 14.14700688%;
+  top: 81.89364439%;
+}
+.badge .dot:nth-child(4),
+.badge .dotOn:nth-child(4) {
+  left: 19.77862508%;
+  top: 86.70350072%;
+}
+.badge .dot:nth-child(3),
+.badge .dotOn:nth-child(3) {
+  left: 26.09333602%;
+  top: 90.57316056%;
+}
+.badge .dot:nth-child(2),
+.badge .dotOn:nth-child(2) {
+  left: 32.93565055%;
+  top: 93.40734003%;
+}
+.badge .dot:nth-child(1),
+.badge .dotOn:nth-child(1) {
+  left: 40.13708819%;
+  top: 95.13625225%;
+}
+/* ==================================================
+   Trivia
+===================================================== */
+.trivia-container {
+  padding-top: 4.6875vh;
+  background-color: black;
+  width: 100vw;
+  height: 95.3125vh;
+  top: 0;
+  left: 0;
+  position: absolute;
+  z-index: -2;
+  overflow: hidden;
+}
+.trivia-container .bg {
+  background-image: url(../img/pictureBG.gif);
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+  left: -100vw;
+  position: absolute;
+  margin-top: -4.6875vh;
+  transition: all 30s linear;
+  -webkit-transition: all 30s linear;
+  -moz-transition: all 30s linear;
+  -ms-transition: all 30s linear;
+  -o-transition: all 30s linear;
+  -webkit-transform: translateX(100vw);
+  display: inline-block;
+}
+.trivia-container .bg#two {
+  left: 0vw;
+}
+.trivia-container .text {
+  position: absolute;
+  left: -65vw;
+  transform: translateX(0);
+  -webkit-transform: translateX(0);
+  transform-origin: top left;
+  -webkit-transform: top left;
+  width: 65vw;
+  height: 67vh;
+  top: 13vh;
+  z-index: 2;
+  margin-top: 11.71875vh;
+}
+.trivia-container .text p {
+  display: block;
+  position: absolute;
+  top: 5%;
+  right: 12%;
+  font-size: 60px;
+  width: 68%;
+  color: white;
+  text-shadow: black 3px 3px 5px;
+}
+.trivia-container .text img {
+  width: 100%;
+  height: auto;
+  transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+}
+.trivia-container .image {
+  position: absolute;
+  left: 35%;
+  height: 25%;
+  width: 30%;
+  top: 8%;
+  z-index: -1.5;
+  transform: rotateY(-90deg);
+  -webkit-transform: rotateY(-90deg);
+}
+.trivia-container .image img {
+  width: 100%;
+  height: auto;
+}
+.trivia.active .text {
+  transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+}
+.trivia.active .image {
+  left: 58.4%;
+  transform: rotateY(0deg);
+  -webkit-transform: rotateY(0deg);
+}
+.trivia.odd .text {
+  transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+  left: 36%;
+}
+.trivia.odd .text p {
+  right: inherit;
+  left: 12vw;
+  text-align: right;
+}
+.trivia.odd .text img {
+  transform: scaleX(1);
+  -webkit-transform: scaleX(1);
+}
+.trivia.odd.active .text {
+  transform: translateX(0%);
+  -webkit-transform: translateX(0%);
+}
+.trivia.odd.active .image {
+  left: 10%;
+  transform: rotateY(0deg);
+  -webkit-transform: rotateY(0deg);
+}
+.trivia .image.intro {
+  z-index: 2;
+  transform: rotateY(0) scale(0.35) translateX(39vw) translateY(29vw);
+  -webkit-transform: rotateY(0) scale(0.35) translateX(39vw) translateY(29vw);
+  transition: all 1s ease;
+  -webkit-transition: all 1s ease;
+}
+.trivia .image.intro img {
+  filter: grayscale(1) brightness(0.3);
+  -webkit-filter: grayscale(1) brightness(0.3);
+  transition: all 1s ease;
+  -webkit-transition: all 1s ease;
+}
+.trivia .image.intro.active {
+  z-index: 2;
+  position: absolute;
+  transform: rotateY(0) scale(1) translateX(0vw) translateY(0vw);
+  -webkit-transform: rotateY(0) scale(1) translateX(0vw) translateY(0vw);
+  top: 12%;
+  left: 58.4%;
+  height: 70%;
+  width: 9.4%;
+  transform: rotateY(0deg);
+  -webkit-filter: grayscale(1) brightness(0.3);
+}
+.video-container,
+.vid-in,
+.vid-in *,
+.lower-third,
+.img-mask,
+.img-mask img {
+  transition: all 2s ease;
+  -webkit-transition: all 2s ease;
+  -moz-transition: all 2s ease;
+  -ms-transition: all 2s ease;
+  -o-transition: all 2s ease;
+}
+.video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+}
+.video-container .lower-third {
+  width: 100vw;
+  opacity: 1;
+  position: absolute;
+  bottom: -2vh;
+  left: 0;
+  height: 21.4vh;
+}
+.video-container .lower-third .trailer-text {
+  position: absolute;
+  left: 25vw;
+  top: 0vh;
+  color: white;
+  font-size: 3.5vh;
+  line-height: 4.8vh;
+  text-shadow: black 0.5vh 0.5vh 0.5vh;
+  z-index: 1;
+  opacity: 0;
+  font-family: 'Gotham Book';
+}
+.video-container .lower-third .trailer-text.active {
+  opacity: 1;
+}
+.video-container .lower-third .img-mask {
+  position: absolute;
+  left: -110vw;
+  bottom: -2vh;
+  width: 110vw;
+  height: 100%;
+  -webkit-transform: translate(0vw, 0vh);
+  overflow: hidden;
+  border-radius: 0px 9.7vh 9.7vh 0px;
+  -moz-border-radius: 0px 9.7vh 9.7vh 0px;
+  -webkit-border-radius: 0px 9.7vh 9.7vh 0px;
+}
+.video-container .lower-third img {
+  position: absolute;
+  z-index: 0;
+  display: block;
+  bottom: 4.0vh;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  -webkit-transform: translate(110vw, 0vh);
+}
+.video-container .lower-third .highlight {
+  position: absolute;
+  z-index: 1;
+  width: auto;
+  left: -100vw;
+  bottom: 0;
+  transition: all 10s ease-out;
+  -webkit-transition: all 10s ease-out;
+  -webkit-transform: translate(80vw, 0vh);
+}
+.video-container .lower-third.active .img-mask {
+  -webkit-transform: translate(110vw, 0vh);
+}
+.video-container .lower-third.active img {
+  -webkit-transform: translate(0vw, 0vh);
+}
+.video-container .lower-third.active .highlight {
+  z-index: 1;
+  width: auto;
+  -webkit-transform: translate(200vw, 0vh);
+}
+.video-container .vid-in {
+  position: absolute;
+  top: -50vw;
+  left: -110vw;
+  width: 100vw;
+  height: 100vh;
+}
+.video-container .video-mask {
+  position: relative;
+  top: 0vh;
+  left: 0vw;
+  width: 225vw;
+  height: 400vh;
+  overflow: hidden;
+  transform-origin: top left;
+  box-shadow: -1vw -1vw 3vw 2vw rgba(0, 0, 0, 0.6);
+  -webkit-transform: rotate(45deg) translate(0vw, 0vh);
+}
+.video-container .video-rotate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform: rotate(-45deg);
+  background: black;
+}
+.video-container video {
+  width: 100vw;
+  opacity: 1;
+  position: absolute;
+  top: 50vw;
+  left: -50vw;
+  -webkit-transform: translate(160vw, 0vh);
+}
+.video-container .red-wipe {
+  position: absolute;
+  height: 112.5vw;
+  width: 20vw;
+  left: -60vw;
+  top: 25vw;
+  box-shadow: -1vw -1vw 3vw 2vw rgba(0, 0, 0, 0.6);
+  -webkit-transform: rotate(-45deg) translate(80vw, 80vw) scale(1.25, 1);
+  background: maroon;
+  background: #be086a;
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPHJhZGlhbEdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNzUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNiZTA4NmEiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSI2NCUiIHN0b3AtY29sb3I9IiM0ZTAwMjUiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNDUwMDFlIiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L3JhZGlhbEdyYWRpZW50PgogIDxyZWN0IHg9Ii01MCIgeT0iLTUwIiB3aWR0aD0iMTAxIiBoZWlnaHQ9IjEwMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+  background: -moz-radial-gradient(center, ellipse cover, #be086a 0%, #4e0025 64%, #45001e 100%);
+  background: -webkit-radial-gradient(center, ellipse cover, #be086a 0%, #4e0025 64%, #45001e 100%);
+  background: radial-gradient(ellipse at center, #be086a 0%, #4e0025 64%, #45001e 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#be086a', endColorstr='#45001e', GradientType=1);
+}
+.video-container .red-wipe.active {
+  -webkit-transform: rotate(-45deg) translate(140vw, 140vw) scale(1.5, 1);
+}
+.video-container .video-trigger.active .vid-in {
+  -webkit-transform: translate(160vw, 0vh);
+}
+.video-container .video-trigger.active video {
+  -webkit-transform: translate(0vw, 0vh);
+}
